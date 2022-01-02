@@ -1,1 +1,1 @@
-AGVSim_project
+AVGSim
