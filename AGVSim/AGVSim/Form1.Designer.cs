@@ -61,6 +61,10 @@
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.pictureBoxMap = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.Actral_Size_Lable = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Measuring_Size = new System.Windows.Forms.Button();
             this.FuntoolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.SuspendLayout();
@@ -453,7 +457,7 @@
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 81);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 65);
             // 
             // toolStripButton1
             // 
@@ -468,8 +472,7 @@
             // pictureBoxMap
             // 
             this.pictureBoxMap.BackColor = System.Drawing.Color.White;
-            this.pictureBoxMap.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBoxMap.Location = new System.Drawing.Point(0, 65);
+            this.pictureBoxMap.Location = new System.Drawing.Point(134, 67);
             this.pictureBoxMap.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBoxMap.Name = "pictureBoxMap";
             this.pictureBoxMap.Size = new System.Drawing.Size(1150, 617);
@@ -478,7 +481,54 @@
             this.pictureBoxMap.TabStop = false;
             this.pictureBoxMap.Click += new System.EventHandler(this.pictureBoxMap_Click);
             this.pictureBoxMap.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxMap_Paint);
+            this.pictureBoxMap.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMap_MouseClick);
             this.pictureBoxMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMap_MouseDown);
+            this.pictureBoxMap.MouseEnter += new System.EventHandler(this.pictureBoxMap_MouseEnter);
+            this.pictureBoxMap.MouseLeave += new System.EventHandler(this.pictureBoxMap_MouseLeave);
+            this.pictureBoxMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMap_MouseMove);
+            this.pictureBoxMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMap_MouseUp);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Calibri", 16F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.label3.Location = new System.Drawing.Point(0, 175);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(130, 27);
+            this.label3.TabIndex = 49;
+            this.label3.Text = "Actural Size :";
+            // 
+            // Actral_Size_Lable
+            // 
+            this.Actral_Size_Lable.AutoSize = true;
+            this.Actral_Size_Lable.Font = new System.Drawing.Font("Calibri", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Actral_Size_Lable.Location = new System.Drawing.Point(31, 204);
+            this.Actral_Size_Lable.Name = "Actral_Size_Lable";
+            this.Actral_Size_Lable.Size = new System.Drawing.Size(25, 29);
+            this.Actral_Size_Lable.TabIndex = 50;
+            this.Actral_Size_Lable.Text = "0";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Calibri", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(93, 202);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(32, 29);
+            this.label1.TabIndex = 51;
+            this.label1.Text = "m";
+            // 
+            // Measuring_Size
+            // 
+            this.Measuring_Size.Font = new System.Drawing.Font("Calibri", 16F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.Measuring_Size.ForeColor = System.Drawing.Color.Black;
+            this.Measuring_Size.Location = new System.Drawing.Point(5, 84);
+            this.Measuring_Size.Name = "Measuring_Size";
+            this.Measuring_Size.Size = new System.Drawing.Size(125, 78);
+            this.Measuring_Size.TabIndex = 53;
+            this.Measuring_Size.Text = "Measuring Size";
+            this.Measuring_Size.UseVisualStyleBackColor = true;
+            this.Measuring_Size.Click += new System.EventHandler(this.Measuring_Size_Click);
             // 
             // Form1
             // 
@@ -486,16 +536,22 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1150, 682);
+            this.Controls.Add(this.Measuring_Size);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.Actral_Size_Lable);
             this.Controls.Add(this.pictureBoxMap);
             this.Controls.Add(this.FuntoolStrip);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.FuntoolStrip.ResumeLayout(false);
             this.FuntoolStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -533,6 +589,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         public System.Windows.Forms.PictureBox pictureBoxMap;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label Actral_Size_Lable;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button Measuring_Size;
     }
 }
 

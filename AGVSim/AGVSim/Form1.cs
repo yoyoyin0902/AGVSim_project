@@ -14,6 +14,7 @@ using CTime = System.DateTime;
 using System.Threading;
 using System.Data.OleDb;
 using DWG_MAPVIEW;
+using System.IO;
 
 namespace AGVSim
 {
@@ -77,8 +78,274 @@ namespace AGVSim
             InitParameters();
             onButtonUpdate();
             form1 = this;
+            this.pictureBoxMap.MouseWheel += new
+                MouseEventHandler(PictureBox_MouseWheel);
         }
 
+        /// <summary>
+        /// /////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// /////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+
+        Point Start, End, Position;
+        float ProportionSize , sizeActact;
+        int MeasuringAble = 0;
+
+        private void pictureBoxMap_MouseEnter(object sender, EventArgs e)
+        {
+            
+           this.pictureBoxMap.Focus();
+
+        }
+
+       private void pictureBoxMap_MouseLeave(object sender, EventArgs e)
+       {
+           this.pictureBoxMap.Parent.Focus();
+       }
+
+       private void PictureBox_MouseWheel(object sender, MouseEventArgs e)
+       {
+
+
+           if (e.Delta >= 0) 
+           {
+               this.pictureBoxMap.Height = (int)(this.pictureBoxMap.Height * 1.1);                
+               this.pictureBoxMap.Width = (int)(this.pictureBoxMap.Width * 1.1);
+               Console.WriteLine("放大");
+           }
+           else
+           {
+               this.pictureBoxMap.Height = (int)(this.pictureBoxMap.Height * 0.9);
+               this.pictureBoxMap.Width = (int)(this.pictureBoxMap.Width * 0.9);
+               Console.WriteLine("縮小");
+           }
+       }
+
+
+
+        private void pictureBoxMap_MouseClick(object sender, MouseEventArgs e)
+       {
+            StreamReader str = new StreamReader(@"C:\Users\amy33\Documents\DWG_20211210.txt");
+            string ReadLine1, ReadLine2, ReadLine3;
+            ReadLine1 = str.ReadLine();
+            ReadLine2 = str.ReadLine();
+            ReadLine3 = str.ReadLine();
+
+            //切割資料
+            string[] originsize = ReadLine1.Split(' ');
+            string[] framesize = ReadLine2.Split(' ');
+            string[] actsize = ReadLine3.Split(' ');
+            //儲存XY
+            string frameX = framesize[0];
+            string frameY = framesize[1];
+            string actX = actsize[0];
+            string actY = actsize[1];
+            //轉成float
+            float FframeX = float.Parse(frameX);
+            float FframeY = float.Parse(frameY);
+            float FactX = float.Parse(actX) * 100;
+            float FactY = float.Parse(actY) * 100;
+            //計算比例
+            float proportionX = FframeX / FactX;
+            float proportionY = FframeY / FactY;
+            ProportionSize = (proportionX + proportionY) / 2;
+            Console.WriteLine("ProportionSize = " + ProportionSize);
+
+            str.Close();
+        }
+
+
+        private void pictureBoxMap_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (MeasuringAble % 2 != 0) 
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    Start = e.Location;
+                }
+            }
+            
+            CPoint point = new CPoint(e.X, e.Y);
+            int idx = 0;
+            int type = 0;
+
+            if (e.Button == MouseButtons.Left)
+            {
+                if (m_icon_sel == 0)
+                {
+                    Console.WriteLine("[pictureBoxMap_MouseDown] 0");
+                    // Set LeftBTDown as a Start Node
+                    if (bSetPath && Vehicle_List.Count == 1 && !Vehicle_List[0].A_Star_StartNode_Selected)
+                    {
+                        if (CursorInsideStation(point, ref idx, ref type))
+                        {
+                            // Captured
+                            Cap_ID = idx;
+                            Cap_Type = type; // Stop Type
+                            if (Cap_Type == 10)
+                            {
+                                Vehicle_List[0].A_Star_StartNode = Stop_List[Cap_ID].m_ID;
+                                Stop_List[Cap_ID].m_FromToStatus = 1; // A Destination
+                                Vehicle_List[0].A_Star_StartNode_Selected = true;
+                            }
+                            pictureBoxMap.Invalidate(WorkArea);
+                        }
+                    }
+                    else if (b_AddVehcile) /* AGV */
+                    {
+                        // Drag a Vehicle on a Stiop
+                        if (CapObjects(point))
+                        {
+                            if (Cap_Type == 10)
+                            {
+                                // A Vehicle
+                                CVehicle pVeh = new CVehicle();
+                                pVeh.m_DrawOrg = m_DrawOrg;
+                                CStop tmp = Stop_List[Cap_ID];
+                                pVeh.AddObj(GetID(30), ref tmp, 0, 0, m_AGV_Speed, m_AGV_AngularSpeed); // 30: Type Vehicle
+                                Stop_List[Cap_ID] = tmp;
+                                if (!sqlserver.Check_AGV(pVeh.m_ID))
+                                    sqlserver.Insert_AGV_State(pVeh);
+                                Vehicle_List.Add(pVeh);
+                                CapRect = new CRect(0, 0, 0, 0);
+                                Cap_ID = 0;
+                                Cap_Type = 0;
+                            }
+                        }
+                        b_AddVehcile = false;
+                        onButtonUpdate();
+                    }
+                    else
+                    {
+                        // Not Setting a Path
+                        if (CapObjects(point))
+                        {
+                            CapMove = true;
+                            CapPos = point;
+                        }
+                        else
+                        {
+                            CapMove = false;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("[pictureBoxMap_MouseDown] 1");
+                    AddObj(point);
+                }
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+
+                if (bSetPath && Vehicle_List.Count == 1 && !Vehicle_List[0].A_Star_EndNode_Selected)
+                {
+                    if (CursorInsideStation(point, ref idx, ref type))
+                    {
+                        // Captured
+                        Cap_ID = idx;
+                        Cap_Type = type; // Stop Type
+                        if (Cap_Type == 10)
+                        {
+                            Vehicle_List[0].A_Star_EndNode = Stop_List[Cap_ID].m_ID;
+                            Stop_List[Cap_ID].m_FromToStatus = 2; // A Destination
+                            Vehicle_List[0].A_Star_EndNode_Selected = true;
+                            bSetPath = false;
+                        }
+                    }
+                }
+                pictureBoxMap.Invalidate(WorkArea);
+
+            }
+            
+        }
+
+
+        private void pictureBoxMap_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (MeasuringAble % 2 != 0)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    if (e.Button != MouseButtons.Left)
+                        return;
+                    End = e.Location;
+                    pictureBoxMap.Invalidate();
+                }
+            }
+        }
+
+
+        private void pictureBoxMap_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (MeasuringAble % 2 != 0)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    PictureBox pic = sender as PictureBox;
+                    End = e.Location;
+                }
+
+                float sizeA = End.X - Start.X;
+                float sizeB = End.Y - Start.Y;
+                float sizeC = (float)Math.Pow((float)Math.Pow(sizeA, 2) + (float)Math.Pow(sizeB, 2), 0.5);
+                float sizeAct = sizeC * ProportionSize * 25 / 100;
+                float sizeActact = (float)Math.Round(sizeAct, 2, MidpointRounding.AwayFromZero);
+                Actral_Size_Lable.Text = sizeActact.ToString();
+
+                Console.WriteLine(sizeA);
+                Console.WriteLine(sizeB);
+                Console.WriteLine(sizeC);
+                Console.WriteLine(sizeActact);
+            }
+
+        }
+
+        
+        private void pictureBoxMap_Paint(object sender, PaintEventArgs e)
+        {
+
+            DrawGrid(e);
+            DrawObjs(e);
+            if (MeasuringAble % 2 != 0)
+            {
+                PictureBox pic = sender as PictureBox;
+
+                Pen pen = new Pen(Color.DarkOrange, 2); //繪製線的顏色、粗細
+                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;//繪製線的格式
+
+                if (pic.Image != null)
+                {
+                    //此處是為了在繪製時可以由上向下繪製，也可以由下向上繪製
+                    e.Graphics.DrawLine(pen, Start.X, Start.Y, End.X, End.Y);
+                }
+                pen.Dispose();
+            }
+        }
+
+
+
+        private void Measuring_Size_Click(object sender, EventArgs e)
+        {
+            MeasuringAble++;
+            Start.X = 0;
+            Start.Y = 0;
+            End.X = 0;
+            End.Y = 0;
+            sizeActact = 0;
+            Actral_Size_Lable.Text = sizeActact.ToString();
+            m_icon_sel = 0;
+            m_grid = false;
+            pictureBoxMap.Invalidate();
+        }
+
+
+        /// <summary>
+        /// //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
 
         private void InitParameters()
         {
@@ -124,7 +391,7 @@ namespace AGVSim
             outfile.open(s);
             outfile << str << ".\n";
             */
-            b_AStarWorking = false;
+        b_AStarWorking = false;
             b_A_StartVehicleTrackingID = 1;
             m_AGVAllowWaitingTime = 300;
             //BlockAGV.RemoveAll();
@@ -245,6 +512,9 @@ namespace AGVSim
 
         private void onButtonUpdate()
         {
+            MeasuringAble = 0;
+            Actral_Size_Lable.Text = "0";
+
 
             if (m_icon_sel == 0)
                 onButton_Select.Checked = true;
@@ -344,101 +614,7 @@ namespace AGVSim
             onButtonUpdate();
         }
 
-        private void pictureBoxMap_MouseDown(object sender, MouseEventArgs e)
-        {
-            CPoint point = new CPoint(e.X,e.Y);
-            int idx = 0;
-            int type = 0;
-
-            if (e.Button == MouseButtons.Left)
-            {
-                if (m_icon_sel == 0)
-                {
-                    Console.WriteLine("[pictureBoxMap_MouseDown] 0");
-                    // Set LeftBTDown as a Start Node
-                    if (bSetPath && Vehicle_List.Count == 1 && !Vehicle_List[0].A_Star_StartNode_Selected)
-                    {
-                        if (CursorInsideStation(point, ref idx, ref type))
-                        {
-                            // Captured
-                            Cap_ID = idx;
-                            Cap_Type = type; // Stop Type
-                            if (Cap_Type == 10)
-                            {
-                                Vehicle_List[0].A_Star_StartNode = Stop_List[Cap_ID].m_ID;
-                                Stop_List[Cap_ID].m_FromToStatus = 1; // A Destination
-                                Vehicle_List[0].A_Star_StartNode_Selected = true;
-                            }
-                            pictureBoxMap.Invalidate(WorkArea);
-                        }
-                    }
-                    else if (b_AddVehcile) /* AGV */
-                    {
-                        // Drag a Vehicle on a Stiop
-                        if (CapObjects(point))
-                        {
-                            if (Cap_Type == 10)
-                            {
-                                // A Vehicle
-                                CVehicle pVeh  = new CVehicle();
-                                pVeh.m_DrawOrg = m_DrawOrg;
-                                CStop tmp = Stop_List[Cap_ID];
-                                pVeh.AddObj(GetID(30), ref tmp, 0, 0, m_AGV_Speed, m_AGV_AngularSpeed); // 30: Type Vehicle
-                                Stop_List[Cap_ID] = tmp;
-                                if (!sqlserver.Check_AGV(pVeh.m_ID))
-                                    sqlserver.Insert_AGV_State(pVeh);
-                                Vehicle_List.Add(pVeh);
-                                CapRect = new CRect(0, 0, 0, 0);
-                                Cap_ID = 0;
-                                Cap_Type = 0;
-                            }
-                        }
-                        b_AddVehcile = false;
-                        onButtonUpdate();
-                    }
-                    else
-                    {
-                        // Not Setting a Path
-                        if (CapObjects(point))
-                        {
-                            CapMove = true;
-                            CapPos = point;
-                        }
-                        else
-                        {
-                            CapMove = false;
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("[pictureBoxMap_MouseDown] 1");
-                    AddObj(point);
-                }
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-
-                if (bSetPath && Vehicle_List.Count == 1 && !Vehicle_List[0].A_Star_EndNode_Selected)
-                {
-                    if (CursorInsideStation(point, ref idx, ref type))
-                    {
-                        // Captured
-                        Cap_ID = idx;
-                        Cap_Type = type; // Stop Type
-                        if (Cap_Type == 10)
-                        {
-                            Vehicle_List[0].A_Star_EndNode = Stop_List[Cap_ID].m_ID;
-                            Stop_List[Cap_ID].m_FromToStatus = 2; // A Destination
-                            Vehicle_List[0].A_Star_EndNode_Selected = true;
-                            bSetPath = false;
-                        }
-                    }
-                }
-                pictureBoxMap.Invalidate(WorkArea);
-
-            }
-        }
+        
 
         private void onButton_AStart_Click(object sender, EventArgs e)
         {
@@ -2728,6 +2904,13 @@ namespace AGVSim
 
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        
+
         private void FuntoolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
@@ -2745,6 +2928,8 @@ namespace AGVSim
             Form f2 = new Form4();
             f2.Visible = true;
         }
+
+        
 
         void AddObj(CPoint point)
         {
@@ -3111,11 +3296,7 @@ namespace AGVSim
             }
         }
 
-        private void pictureBoxMap_Paint(object sender, PaintEventArgs e)
-        {
-            DrawGrid(e);
-            DrawObjs(e);
-        }
+        
 
         private void DrawGrid(PaintEventArgs e)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,6 +11,7 @@ using System.Windows.Forms;
 using System.IO;
 using AGVSim;
 
+
 namespace DWG_MAPVIEW
 {
 
@@ -17,7 +19,8 @@ namespace DWG_MAPVIEW
     {
         int c = 0, d = 0; //c : 判斷選取框調整按鈕是否有作用
         int finalX = 0, finalY = 0;
-        int Pen_adjust = 1;
+        int Pen_Button_adjust = 1;
+        int Pen_Bar_adjust = 3;
         int Pen_adjust_Topsum = 0;
         int Pen_adjust_Bottomsum = 0;
         int Pen_adjust_Leftsum = 0;
@@ -28,13 +31,17 @@ namespace DWG_MAPVIEW
         int Pen_adjust_Rightsum_before = 0;
         int startXsize, startYsize, endXsize, endYsize;
         int UpBarValue = 50, BottomBarValue = 50, LeftBarValue = 50, RightBarValue = 50;
-        string url = "C:/Users/amy33/Documents/IVAM/AVGSim/台科大模擬專案測試用_20211210-Model.jpg";
+
+        string url = "C:/Users/amy33/Documents/20211210-Model.jpg";
+        
+        String strHostName = Dns.GetHostName(); // 取得本機名稱
 
 
 
 
         Point start, end , NowPosition;
         bool blnDraw;//在MouseMove事件中判斷是否繪製矩形框
+ 
 
 
         public struct StartAndEndPoint
@@ -48,10 +55,14 @@ namespace DWG_MAPVIEW
         public Form4()
         {
             InitializeComponent();
+ //           this.myGroup2.MouseWheel += new MouseEventHandler(JPG_PictureBox_MouseWheel);  //滾輪事件
         }
-        private void Form1_Load(object sender, EventArgs e)
-        {
 
+        
+
+        private void Form1_Load(object sender, EventArgs e)
+
+        {
         }
 
 
@@ -63,16 +74,48 @@ namespace DWG_MAPVIEW
         }
 
         private void ReadJPG_Click(object sender, EventArgs e)
-        {
+        { 
             if (c == 0) c = 1;
-            this.JPG_PictureBox.Image = Image.FromFile(url);
-            Form1.form1.pictureBoxMap.Image = Image.FromFile(url);
+            this.JPG_PictureBox.Image = Image.FromFile(url);                              
             JPG_PictureBox.Size = Image.FromFile(url).Size;
+            Form1.form1.pictureBoxMap.Image = Image.FromFile(url);
             Form1.form1.pictureBoxMap.Size = Image.FromFile(url).Size;
             JPG_PictureBox.Width = JPG_PictureBox.Width * 60 / 100;
             JPG_PictureBox.Height = JPG_PictureBox.Height * 60 / 100;
-            Form1.form1.pictureBoxMap.Width = Form1.form1.pictureBoxMap.Width * 30 / 100;
-            Form1.form1.pictureBoxMap.Height = Form1.form1.pictureBoxMap.Height * 30 / 100;
+
+            /*
+            var dirList = (from d in new System.IO.DirectoryInfo(@"C:/Users/og826/Desktop/專案用CAD檔").GetDirectories()
+                           select d).ToList().OrderByDescending(d => d.LastAccessTime);
+            foreach (var d in dirList)
+            {
+                MessageBox.Show(d.Name + ":" + d.LastAccessTime);
+            }
+            
+            
+            DirectoryInfo s = new System.IO.DirectoryInfo(@"C:/Users/og826/Desktop/專案用CAD檔").GetDirectories()
+                .OrderByDescending(ccc => ccc.LastAccessTime).Take(1).Single();
+            MessageBox.Show(s.Name + " : " + s.LastAccessTime);
+            */
+
+            /*
+            Console.WriteLine("hello");
+            string folderPath = "C:/Users/og826/Desktop/專案用CAD檔";
+            int x=0;
+            foreach (string file in Directory.EnumerateFiles(folderPath, "*.jpg"))
+            {
+                x++;
+            }
+
+            string[] dataname = new string[x];
+
+            //foreach (string file in Directory.EnumerateFiles(folderPath, "*.jpg"))
+            //{
+            //    dataname[x] = file;
+            //    Console.WriteLine(dataname[x]);
+            //}
+            */
+
+
 
             /*            OpenFileDialog openFileDialog1 = new OpenFileDialog
                         {
@@ -207,7 +250,8 @@ namespace DWG_MAPVIEW
             pen.Dispose();
         }
 
-        
+
+
 
         private void Pen_Delete_button_Click(object sender, EventArgs e)
         {
@@ -231,20 +275,31 @@ namespace DWG_MAPVIEW
         }
 
 
+        //// picture縮放
         /*
-                private void Map_Information_Paint(object sender, PaintEventArgs e)
-                {
-                    //清除GroupBox邊框顏色
-                    e.Graphics.Clear(this.BackColor);
-                    SizeF fontSize = e.Graphics.MeasureString(groupBox1.Text, groupBox1.Font);
-                    //重新指定文字，字體，畫刷，在指定位置上去繪製字符串
-                    e.Graphics.DrawString(groupBox1.Text, groupBox1.Font, Brushes.MediumBlue, (groupBox1.Width - fontSize.Width) / 2, 1);
-                    //重新畫線，顏色是MediumBlue
-                    e.Graphics.DrawLine(Pens.MediumBlue, 1, 10, (groupBox1.Width - fontSize.Width) / 2, 10);
-                    e.Graphics.DrawLine(Pens.MediumBlue, (groupBox1.Width + fontSize.Width) / 2 -4, 10, groupBox1.Width - 2, 10);
-                }
+        private void JPG_PictureBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (e.Delta >= 0)
+            {
+                JPG_PictureBox.Width = (int)(JPG_PictureBox.Width * 1.1);
+                JPG_PictureBox.Height = (int)(JPG_PictureBox.Height * 1.1);
+            }
+            else
+            {
+                JPG_PictureBox.Width = (int)(JPG_PictureBox.Width / 1.1);
+                JPG_PictureBox.Height = (int)(JPG_PictureBox.Height / 1.1);
+            }
+        }
         */
+        private void JPG_PictureBox_MouseLeave(object sender, EventArgs e)
+        {
+            JPG_PictureBox.Parent.Focus();
+        }
 
+        private void JPG_PictureBox_MouseEnter(object sender, EventArgs e)
+        {
+            JPG_PictureBox.Focus();
+        }
 
         //////////////////////////////////////////////////////////////////////////////
         //                               選取框操作                                 //
@@ -253,7 +308,7 @@ namespace DWG_MAPVIEW
         {
             if (c == 2)
             {
-                start.Y = start.Y - 1;
+                start.Y = start.Y - Pen_Button_adjust;
                 Bin();
                 pos();
             }
@@ -263,7 +318,7 @@ namespace DWG_MAPVIEW
         {
             if (c == 2)
             {
-                start.Y = start.Y + 1;
+                start.Y = start.Y + Pen_Button_adjust;
                 Bin();
                 pos();
             }
@@ -275,7 +330,7 @@ namespace DWG_MAPVIEW
         {
             if (c == 2)
             {
-                end.Y = end.Y - 1;
+                end.Y = end.Y - Pen_Button_adjust;
                 Bin();
                 pos();
             }
@@ -285,7 +340,7 @@ namespace DWG_MAPVIEW
         {
             if (c == 2)
             {
-                end.Y = end.Y + 1;
+                end.Y = end.Y + Pen_Button_adjust;
                 Bin();
                 pos();
             }
@@ -297,18 +352,7 @@ namespace DWG_MAPVIEW
         {
             if (c == 2)
             {
-                start.X = start.X - 1;
-                Bin();
-                pos();
-            }
-        }
-        
-
-        private void Pen_Left_Right_btn_Click(object sender, EventArgs e)
-        {
-            if (c == 2)
-            {
-                start.X = start.X + 1;
+                start.X = start.X - Pen_Button_adjust;
                 Bin();
                 pos();
             }
@@ -318,32 +362,28 @@ namespace DWG_MAPVIEW
         {
             if (c == 2)
             {
-                end.X = end.X - 1;
+                end.X = end.X - Pen_Button_adjust;
                 Bin();
                 pos();
             }
         }
 
-        private void label4_Click(object sender, EventArgs e)
+        private void Pen_Left_Right_btn_Click_1(object sender, EventArgs e)
         {
-
+            if (c == 2)
+            {
+                start.X = start.X + Pen_Button_adjust;
+                Bin();
+                pos();
+            }
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void myGroup1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void Pen_Right_Right_btn_Click(object sender, EventArgs e)
         {
             if (c == 2)
             {
-                end.X = end.X + 1;
+                end.X = end.X + Pen_Button_adjust;
                 Bin();
                 pos();
             }
@@ -355,12 +395,12 @@ namespace DWG_MAPVIEW
             {
                 if (Pen_Up_Bar.Value > UpBarValue)
                 {
-                    start.Y = start.Y - 3;
+                    start.Y = start.Y - Pen_Bar_adjust;
                     UpBarValue = Pen_Up_Bar.Value;
                 }
                 if (Pen_Up_Bar.Value < UpBarValue)
                 {
-                    start.Y = start.Y + 3;
+                    start.Y = start.Y + Pen_Bar_adjust;
                     UpBarValue = Pen_Up_Bar.Value;
                 }
             }
@@ -374,12 +414,12 @@ namespace DWG_MAPVIEW
             {
                 if (Pen_Bottom_Bar.Value > BottomBarValue)
                 {
-                    end.Y = end.Y - 3;
+                    end.Y = end.Y - Pen_Bar_adjust;
                     BottomBarValue = Pen_Bottom_Bar.Value;
                 }
                 if (Pen_Bottom_Bar.Value < BottomBarValue)
                 {
-                    end.Y = end.Y + 3;
+                    end.Y = end.Y + Pen_Bar_adjust;
                     BottomBarValue = Pen_Bottom_Bar.Value;
                 }
             }
@@ -393,12 +433,12 @@ namespace DWG_MAPVIEW
             {
                 if (Pen_Left_Bar.Value > LeftBarValue)
                 {
-                    start.X = start.X + 3;
+                    start.X = start.X + Pen_Bar_adjust;
                     LeftBarValue = Pen_Left_Bar.Value;
                 }
                 if (Pen_Left_Bar.Value < LeftBarValue)
                 {
-                    start.X = start.X - 3;
+                    start.X = start.X - Pen_Bar_adjust;
                     LeftBarValue = Pen_Left_Bar.Value;
                 }
             }
@@ -412,12 +452,12 @@ namespace DWG_MAPVIEW
             {
                 if (Pen_Right_Bar.Value > RightBarValue)
                 {
-                    end.X = end.X + 3;
+                    end.X = end.X + Pen_Bar_adjust;
                     RightBarValue = Pen_Right_Bar.Value;
                 }
                 if (Pen_Right_Bar.Value < RightBarValue)
                 {
-                    end.X = end.X - 3;
+                    end.X = end.X - Pen_Bar_adjust;
                     RightBarValue = Pen_Right_Bar.Value;
                 }
             }
@@ -433,33 +473,28 @@ namespace DWG_MAPVIEW
 
 
         private void TXT_Output_Click(object sender, EventArgs e)
-        {
+        {    
             {
                 // 將字串寫入TXT檔
-                StreamWriter str = new StreamWriter(@"C:/Users/amy33/Documents/IVAM/AVGSim/台科大模擬專案測試用_20211210.txt");
-                string WriteWord1 = Image.FromFile(url).Width.ToString() + "," + Image.FromFile(url).Height.ToString();
-                string WriteWord2 = finalX.ToString() + "," + finalY.ToString();
-                string WriteWord3 = ActSize_X.Text + "," + ActSize_Y.Text;
+                StreamWriter str = new StreamWriter(@"C:\Users\amy33\Documents\DWG_20211210.txt");
+                string WriteWord1 = Image.FromFile(url).Width.ToString() + " " + Image.FromFile(url).Height.ToString();
+                string WriteWord2 = finalX.ToString() + " " + finalY.ToString();
+                string WriteWord3 = ActSize_X.Text + " " + ActSize_Y.Text;
+
                 str.WriteLine(WriteWord1);
                 str.WriteLine(WriteWord2);
                 str.WriteLine(WriteWord3);
                 str.Close();
                 MessageBox.Show("The file is save！");
-                
             }
-        }
-
-        private void groupBox3_Enter(object sender, EventArgs e)
-        {
-
         }
 
 
         void pos()
         {
-            finalX = (Math.Abs(Math.Abs(end.X) - Math.Abs(start.X))) * 100 / 60;
-            finalY = Math.Abs(Math.Abs(end.Y) - Math.Abs(start.Y)) * 100 / 60;
-            Pen_Size_Lable.Text = finalX + " * " + finalY;
+            finalX = (Math.Abs(Math.Abs(end.X) - Math.Abs(start.X))) * 100 / 60 * 960 / JPG_PictureBox.Width;
+            finalY = Math.Abs(Math.Abs(end.Y) - Math.Abs(start.Y)) * 100 / 60 * 720 / JPG_PictureBox.Height;
+            Pen_Size_Lable.Text = finalX + "*" + finalY;
         }
         void Bin()
         {

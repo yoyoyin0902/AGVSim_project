@@ -13,13 +13,13 @@ namespace AGVSim
     public class sqlserver
     {
         public List<COrder> ReceiveOrder = new List<COrder>();
-        public static string server_name = "127.0.0.1";//server 名稱
+        public static string server_name = "LAPTOP-FATAMY\\SQLEXPRESS";//server 名稱
         public static string Database_name = "AGVSim";//資料庫(存站點還有路徑的)
         public static string Database_table_AGV_name = "AGV";
         public static string Database_table_Path_name = "Path";
         public static string Database_table_Stop_name = "Stop";
-        public static string Database_table_Order_name = "TOrder";
-        public static string Database_table_Order_Update_name = "UpOrder";
+        public static string Database_table_Order_name;// = "TOrder";
+        public static string Database_table_Order_Update_name;// = "UpOrder";
         public static string userName = "sa";
         public static string password = "ivam";
 
