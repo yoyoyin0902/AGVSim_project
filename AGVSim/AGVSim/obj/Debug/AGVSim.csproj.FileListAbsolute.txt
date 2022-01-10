@@ -227,7 +227,6 @@ C:\Users\amy33\Downloads\AGVSim\AGVSim\AGVSim\obj\Debug\AGVSim.csproj.CoreCompil
 C:\Users\amy33\Downloads\AGVSim\AGVSim\AGVSim\obj\Debug\AGVSim.exe
 C:\Users\amy33\Downloads\AGVSim\AGVSim\AGVSim\obj\Debug\AGVSim.pdb
 =======
-<<<<<<< HEAD
 C:\Users\amy33\Documents\IVAM\AGVSim_project\AGVSim\AGVSim\bin\Debug\AGVSim.exe.config
 C:\Users\amy33\Documents\IVAM\AGVSim_project\AGVSim\AGVSim\bin\Debug\AGVSim.exe
 C:\Users\amy33\Documents\IVAM\AGVSim_project\AGVSim\AGVSim\bin\Debug\AGVSim.pdb
@@ -247,6 +246,4 @@ C:\Users\amy33\Documents\IVAM\AGVSim_project\AGVSim\AGVSim\obj\Debug\AGVSim.cspr
 C:\Users\amy33\Documents\IVAM\AGVSim_project\AGVSim\AGVSim\obj\Debug\AGVSim.csproj.CoreCompileInputs.cache
 C:\Users\amy33\Documents\IVAM\AGVSim_project\AGVSim\AGVSim\obj\Debug\AGVSim.exe
 C:\Users\amy33\Documents\IVAM\AGVSim_project\AGVSim\AGVSim\obj\Debug\AGVSim.pdb
-=======
->>>>>>> main
 >>>>>>> main
