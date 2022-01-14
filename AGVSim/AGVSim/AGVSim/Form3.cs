@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using AGVSim;
-
+using System.Reflection;
 
 namespace DWG_MAPVIEW
 {
@@ -32,7 +32,10 @@ namespace DWG_MAPVIEW
         int startXsize, startYsize, endXsize, endYsize;
         int UpBarValue = 50, BottomBarValue = 50, LeftBarValue = 50, RightBarValue = 50;
 
-        string url = "C:/Users/amy33/Documents/20211210-Model.jpg";
+
+        string url = System.Environment.CurrentDirectory;
+        // C:\Users\amy33\Documents\IVAM\AGVSim_project/model_map.jpg
+        
         
         String strHostName = Dns.GetHostName(); // 取得本機名稱
 
@@ -74,14 +77,17 @@ namespace DWG_MAPVIEW
         }
 
         private void ReadJPG_Click(object sender, EventArgs e)
-        { 
+        {
+           
             if (c == 0) c = 1;
-            this.JPG_PictureBox.Image = Image.FromFile(url);                              
-            JPG_PictureBox.Size = Image.FromFile(url).Size;
-            Form1.form1.pictureBoxMap.Image = Image.FromFile(url);
-            Form1.form1.pictureBoxMap.Size = Image.FromFile(url).Size;
+            this.JPG_PictureBox.Image = Image.FromFile(url+ "/model_map.jpg");
+            JPG_PictureBox.Size = Image.FromFile(url + "/model_map.jpg").Size;
+            Form1.form1.pictureBoxMap.Image = Image.FromFile(url + "/model_map.jpg");
+            Form1.form1.pictureBoxMap.Size = Image.FromFile(url + "/model_map.jpg").Size;
             JPG_PictureBox.Width = JPG_PictureBox.Width * 60 / 100;
             JPG_PictureBox.Height = JPG_PictureBox.Height * 60 / 100;
+            Form1.form1.pictureBoxMap.Width = Form1.form1.pictureBoxMap.Width * 50 / 100;
+            Form1.form1.pictureBoxMap.Height = Form1.form1.pictureBoxMap.Height * 50 / 100;
 
             /*
             var dirList = (from d in new System.IO.DirectoryInfo(@"C:/Users/og826/Desktop/專案用CAD檔").GetDirectories()
@@ -475,9 +481,11 @@ namespace DWG_MAPVIEW
         private void TXT_Output_Click(object sender, EventArgs e)
         {    
             {
+                
+
                 // 將字串寫入TXT檔
-                StreamWriter str = new StreamWriter(@"C:\Users\amy33\Documents\DWG_20211210.txt");
-                string WriteWord1 = Image.FromFile(url).Width.ToString() + " " + Image.FromFile(url).Height.ToString();
+                StreamWriter str = new StreamWriter(url + "/Parameter.txt");
+                string WriteWord1 = Image.FromFile(url + "/model_map.jpg").Width.ToString() + " " + Image.FromFile(url + "/model_map.jpg").Height.ToString();
                 string WriteWord2 = finalX.ToString() + " " + finalY.ToString();
                 string WriteWord3 = ActSize_X.Text + " " + ActSize_Y.Text;
 

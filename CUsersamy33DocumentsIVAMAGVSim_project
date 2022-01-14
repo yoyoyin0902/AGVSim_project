@@ -1,0 +1,80 @@
+[33mcommit 367b5473d5ef02c4868f2a4330b395ba3183df33[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Merge: f470e2e 8e21aba
+Author: Amy <amy0937968@gmail.com>
+Date:   Fri Jan 14 17:35:27 2022 +0800
+
+    Merge remote-tracking branch 'origin/main' into main
+
+[33mcommit f470e2e0d04d410a5bdb3436dcf5a4f984465e5f[m
+Merge: f60ff64 5636812
+Author: Amy <amy0937968@gmail.com>
+Date:   Mon Jan 10 13:49:10 2022 +0800
+
+    Merge remote-tracking branch 'origin/main' into main
+
+[33mcommit 8e21aba08c512aa8ef5b5f29dd45a64a85795123[m
+Merge: f60ff64 5636812
+Author: Amy <amy0937968@gmail.com>
+Date:   Mon Jan 10 13:49:10 2022 +0800
+
+    Merge remote-tracking branch 'origin/main' into main
+
+[33mcommit f60ff640c9d5a257951f49633340ccfca8a82fbf[m
+Merge: 7c75e14 515cfcc
+Author: Amy <amy0937968@gmail.com>
+Date:   Mon Jan 10 13:43:55 2022 +0800
+
+    2.0
+
+[33mcommit 56368121d76f11024214eacd4ea29a2516fe0f7c[m
+Merge: 7c75e14 515cfcc
+Author: Amy <amy0937968@gmail.com>
+Date:   Mon Jan 10 13:43:55 2022 +0800
+
+    2.0
+
+[33mcommit 7c75e14f3345e747ce36f06013658e3da432b4b9[m
+Merge: 216318c aa40015
+Author: Amy <amy0937968@gmail.com>
+Date:   Sun Jan 9 17:14:05 2022 +0800
+
+    Merge remote-tracking branch 'origin/main' into main
+
+[33mcommit 515cfcc6bd0132ca8916350670270fd292fff084[m
+Merge: 216318c aa40015
+Author: Amy <amy0937968@gmail.com>
+Date:   Sun Jan 9 17:14:05 2022 +0800
+
+    Merge remote-tracking branch 'origin/main' into main
+
+[33mcommit 216318c15b33ceae39d0ab234680f1c445d684ac[m
+Merge: f88be6f 5270e7d
+Author: Amy <amy0937968@gmail.com>
+Date:   Sun Jan 9 17:08:05 2022 +0800
+
+    0109
+
+[33mcommit aa400150f298984c4cd08f16ba00236211a89ec6[m
+Merge: f88be6f 5270e7d
+Author: Amy <amy0937968@gmail.com>
+Date:   Sun Jan 9 17:08:05 2022 +0800
+
+    Merge remote-tracking branch 'origin/main' into main
+
+[33mcommit f88be6fe3aa527e1ffee5e3f3b86d23ae2e574fc[m
+Author: Amy <amy0937968@gmail.com>
+Date:   Sun Jan 2 21:40:39 2022 +0800
+
+    1220
+
+[33mcommit 5270e7d44863c881af0c3454afd5a27305e07c3a[m
+Author: Amy <amy0937968@gmail.com>
+Date:   Sun Jan 2 21:40:39 2022 +0800
+
+    1220
+
+[33mcommit ec8e03383dd383ad9790b38c0490883b849ba951[m
+Author: Amy <amy0937968@gmail.com>
+Date:   Sun Jan 2 21:39:42 2022 +0800
+
+    Initial commit
