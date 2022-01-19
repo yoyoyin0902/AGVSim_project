@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CPoint = System.Drawing.Point;
 using CRect = System.Drawing.Rectangle;
 using System.Drawing;
@@ -42,7 +39,12 @@ namespace AGVSim
 		public List<int> AdjacentStopID = new List<int>();
 		public List<int> PARTS_QUEUE = new List<int>();
 		//Image img = global::AGVSim.Properties.Resources.pic_Station;
-		Image img = Image.FromFile(Param.station_img_path); //要貼的圖 
+		//string url = System.Environment.CurrentDirectory;
+		Image img = Image.FromFile(Param.station_img_path);
+
+		//Image img = Image.FromFile(Param.station_img_path); //要貼的圖 
+
+
 
 
 

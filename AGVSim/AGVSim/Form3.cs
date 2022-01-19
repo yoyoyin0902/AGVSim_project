@@ -34,6 +34,7 @@ namespace DWG_MAPVIEW
 
 
         string url = System.Environment.CurrentDirectory;
+        
         // C:\Users\amy33\Documents\IVAM\AGVSim_project/model_map.jpg
         
         
@@ -78,7 +79,8 @@ namespace DWG_MAPVIEW
 
         private void ReadJPG_Click(object sender, EventArgs e)
         {
-           
+            
+
             if (c == 0) c = 1;
             this.JPG_PictureBox.Image = Image.FromFile(url+ "/model_map.jpg");
             JPG_PictureBox.Size = Image.FromFile(url + "/model_map.jpg").Size;
