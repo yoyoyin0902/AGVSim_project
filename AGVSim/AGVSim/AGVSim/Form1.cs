@@ -16,7 +16,6 @@ using System.Data.OleDb;
 using DWG_MAPVIEW;
 using System.IO;
 
-
 namespace AGVSim
 {
 
@@ -66,6 +65,7 @@ namespace AGVSim
         // Operations
         public List<CPath> Path_List = new List<CPath>();
         public List<CStop> Stop_List = new List<CStop>();
+
         public List<CVehicle> Vehicle_List = new List<CVehicle>();
         CPath tmp_Path = new CPath();
         int ArcPathRadius;
@@ -91,11 +91,8 @@ namespace AGVSim
 
 
         Point Start, End, Position;
-        float ProportionSize, sizeActact, proportionX, proportionY;
+        float ProportionSize , sizeActact;
         int MeasuringAble = 0;
-        string url = System.Environment.CurrentDirectory;
-        int a = 0;
-
 
         private void pictureBoxMap_MouseEnter(object sender, EventArgs e)
         {
@@ -111,7 +108,7 @@ namespace AGVSim
 
        private void PictureBox_MouseWheel(object sender, MouseEventArgs e)
        {
-            /*
+
 
            if (e.Delta >= 0) 
            {
@@ -125,15 +122,13 @@ namespace AGVSim
                this.pictureBoxMap.Width = (int)(this.pictureBoxMap.Width * 0.9);
                Console.WriteLine("縮小");
            }
-
-            */
        }
 
 
-        
+
         private void pictureBoxMap_MouseClick(object sender, MouseEventArgs e)
        {
-            StreamReader str = new StreamReader(url + "/Parameter.txt");
+            StreamReader str = new StreamReader(@"C:\Users\amy33\Documents\DWG_20211210.txt");
             string ReadLine1, ReadLine2, ReadLine3;
             ReadLine1 = str.ReadLine();
             ReadLine2 = str.ReadLine();
@@ -151,44 +146,28 @@ namespace AGVSim
             //轉成float
             float FframeX = float.Parse(frameX);
             float FframeY = float.Parse(frameY);
-            float FactX = float.Parse(actX);
-            float FactY = float.Parse(actY);
+            float FactX = float.Parse(actX) * 100;
+            float FactY = float.Parse(actY) * 100;
             //計算比例
-            proportionX = FactX / FframeX;
-            proportionY = FactY / FframeY;
+            float proportionX = FframeX / FactX;
+            float proportionY = FframeY / FactY;
+            ProportionSize = (proportionX + proportionY) / 2;
+            Console.WriteLine("ProportionSize = " + ProportionSize);
+
             str.Close();
         }
 
 
         private void pictureBoxMap_MouseDown(object sender, MouseEventArgs e)
         {
-            /*
-            if (MeasuringAble % 2 == 0)
+            if (MeasuringAble % 2 != 0) 
             {
                 if (e.Button == MouseButtons.Left)
                 {
                     Start = e.Location;
-                    MeasuringAble++;
                 }
             }
-
-            else if (MeasuringAble % 2 != 0) 
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    PictureBox pic = sender as PictureBox;
-                    End = e.Location;
-                    MeasuringAble++;
-                }
-
-                float sizeA = End.X - Start.X;
-                float sizeB = End.Y - Start.Y;
-                float sizeC = (float)Math.Pow(((float)Math.Pow(sizeA * proportionX, 2)) + ((float)Math.Pow(sizeB * proportionY, 2)), 0.5) * 2;
-                float sizeAct = (float)Math.Round(sizeC, 2, MidpointRounding.AwayFromZero);
-                Actral_Size_Lable.Text = sizeAct.ToString();
-            }*/
-
-
+            
             CPoint point = new CPoint(e.X, e.Y);
             int idx = 0;
             int type = 0;
@@ -287,7 +266,7 @@ namespace AGVSim
 
         private void pictureBoxMap_MouseMove(object sender, MouseEventArgs e)
         {
-            if (MeasuringAble % 2 == 0)
+            if (MeasuringAble % 2 != 0)
             {
                 if (e.Button == MouseButtons.Left)
                 {
@@ -301,8 +280,8 @@ namespace AGVSim
 
 
         private void pictureBoxMap_MouseUp(object sender, MouseEventArgs e)
-        {/*
-            if (MeasuringAble % 2 == 0)
+        {
+            if (MeasuringAble % 2 != 0)
             {
                 if (e.Button == MouseButtons.Left)
                 {
@@ -312,23 +291,16 @@ namespace AGVSim
 
                 float sizeA = End.X - Start.X;
                 float sizeB = End.Y - Start.Y;
-                float sizeC = (float)Math.Pow(((float)Math.Pow(sizeA * proportionX, 2)) + ((float)Math.Pow(sizeB * proportionY, 2)), 0.5) * 2;
-                //float sizeAct = sizeC * ProportionSize *199 / 100;
-                float sizeActact = (float)Math.Round(sizeC, 2, MidpointRounding.AwayFromZero);
+                float sizeC = (float)Math.Pow((float)Math.Pow(sizeA, 2) + (float)Math.Pow(sizeB, 2), 0.5);
+                float sizeAct = sizeC * ProportionSize * 25 / 100;
+                float sizeActact = (float)Math.Round(sizeAct, 2, MidpointRounding.AwayFromZero);
                 Actral_Size_Lable.Text = sizeActact.ToString();
-                
 
-                ActSize[a] = sizeActact;
-                G.Array = ActSize;
-                                                
-                if (a>0)
-                {
-                    Console.WriteLine(ActSize[a-1]);
-                    Console.WriteLine(ActSize[a]);
-                }
-
-                a++;
-            }*/
+                Console.WriteLine(sizeA);
+                Console.WriteLine(sizeB);
+                Console.WriteLine(sizeC);
+                Console.WriteLine(sizeActact);
+            }
 
         }
 
@@ -357,7 +329,7 @@ namespace AGVSim
 
 
         private void Measuring_Size_Click(object sender, EventArgs e)
-        {/*
+        {
             MeasuringAble++;
             Start.X = 0;
             Start.Y = 0;
@@ -367,13 +339,9 @@ namespace AGVSim
             Actral_Size_Lable.Text = sizeActact.ToString();
             m_icon_sel = 0;
             m_grid = false;
-            pictureBoxMap.Invalidate();*/
+            pictureBoxMap.Invalidate();
         }
 
-
-        private void Actral_Size_Lable_TextChanged(object sender, EventArgs e)
-        {
-        }
 
         /// <summary>
         /// //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2919,8 +2887,6 @@ namespace AGVSim
             }
             return cur_id;
         }
-
-
 
         private void onButton_Order_Click(object sender, EventArgs e)
         {

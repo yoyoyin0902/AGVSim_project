@@ -502,17 +502,18 @@
             // 
             this.Actral_Size_Lable.AutoSize = true;
             this.Actral_Size_Lable.Font = new System.Drawing.Font("Calibri", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Actral_Size_Lable.Location = new System.Drawing.Point(31, 204);
+            this.Actral_Size_Lable.Location = new System.Drawing.Point(7, 204);
             this.Actral_Size_Lable.Name = "Actral_Size_Lable";
             this.Actral_Size_Lable.Size = new System.Drawing.Size(25, 29);
             this.Actral_Size_Lable.TabIndex = 50;
             this.Actral_Size_Lable.Text = "0";
+            this.Actral_Size_Lable.TextChanged += new System.EventHandler(this.Actral_Size_Lable_TextChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Calibri", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(93, 202);
+            this.label1.Location = new System.Drawing.Point(97, 202);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 29);
             this.label1.TabIndex = 51;
@@ -520,6 +521,7 @@
             // 
             // Measuring_Size
             // 
+            this.Measuring_Size.Enabled = false;
             this.Measuring_Size.Font = new System.Drawing.Font("Calibri", 16F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
             this.Measuring_Size.ForeColor = System.Drawing.Color.Black;
             this.Measuring_Size.Location = new System.Drawing.Point(5, 84);

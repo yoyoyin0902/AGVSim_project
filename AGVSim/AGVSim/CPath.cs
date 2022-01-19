@@ -8,7 +8,10 @@ using CRect = System.Drawing.Rectangle;
 using System.Drawing;
 using CString = System.String;
 using System.Windows.Forms;
-
+using System.Threading;
+using System.Data.OleDb;
+using DWG_MAPVIEW;
+using System.IO;
 
 namespace AGVSim
 {
@@ -483,12 +486,47 @@ namespace AGVSim
 			e.DrawString(str, drawFont, brushString, CornerPoint.X, CornerPoint.Y);
 		}
 
+
+		float ProportionSize, sizeActact, proportionX, proportionY;
+		int MeasuringAble = 0;
+		string url = System.Environment.CurrentDirectory;
+		float sizeAct;
+
 		public void Draw(Graphics e)
 		{
+
 			CRect tmp_rect1 = new CRect();
 			CRect tmp_rect2 = new CRect();
 			StringColor = Color.FromArgb(255, 0, 64, 64);
-			ss = String.Format("{0:D2}-{1:D}", m_ID, OnPathAGVs.Count);
+
+
+			StreamReader str = new StreamReader(url + "/Parameter.txt");
+			string ReadLine1, ReadLine2, ReadLine3;
+			ReadLine1 = str.ReadLine();
+			ReadLine2 = str.ReadLine();
+			ReadLine3 = str.ReadLine();
+
+			//切割資料
+			string[] originsize = ReadLine1.Split(' ');
+			string[] framesize = ReadLine2.Split(' ');
+			string[] actsize = ReadLine3.Split(' ');
+			//儲存XY
+			string frameX = framesize[0];
+			string frameY = framesize[1];
+			string actX = actsize[0];
+			string actY = actsize[1];
+			//轉成float
+			float FframeX = float.Parse(frameX);
+			float FframeY = float.Parse(frameY);
+			float FactX = float.Parse(actX);
+			float FactY = float.Parse(actY);
+			//計算比例
+			proportionX = FactX / FframeX;
+			proportionY = FactY / FframeY;
+			str.Close();
+
+
+			ss = String.Format("{0:D2}-{1:D}", m_ID, OnPathAGVs.Count + "  " + sizeAct.ToString() + "m");
 
 			Color c1 = Color.FromArgb(255, 255, 0, 0);
 			Color c2 = Color.FromArgb(255, 0, 0, 255);
@@ -496,7 +534,7 @@ namespace AGVSim
 			Color c4 = Color.FromArgb(255, 0, 255, 0);
 			StringColor = Color.FromArgb(255, 0, 0, 0);
 			Pen newPen_red = new Pen(c1, 1);
-			Pen newPen_blue = new Pen(c2, 5);
+			Pen newPen_blue = new Pen(c2, 3);
 			Pen newPen_path2from = new Pen(c3, 1);
 			Pen newPen_path2end = new Pen(c4, 1);
 			brushString = new SolidBrush(StringColor);
@@ -511,6 +549,7 @@ namespace AGVSim
 
 			if (m_type == 0) // Line Path
 			{
+
 				// Draw Vetcor [0] -> [1]
 				Font drawFont = new System.Drawing.Font("Arial", 10, FontStyle.Bold);
 				e.DrawString(ss, drawFont, brushString, (TerminatePoints[0].X + TerminatePoints[1].X) / 2 + m_DrawOrg.X ,(TerminatePoints[0].Y + TerminatePoints[1].Y) / 2 + m_DrawOrg.Y);
@@ -518,6 +557,8 @@ namespace AGVSim
 				e.DrawLine(SelectPen, TerminatePoints[0].X + m_DrawOrg.X, TerminatePoints[0].Y + m_DrawOrg.Y,
 									  TerminatePoints[1].X + m_DrawOrg.X, TerminatePoints[1].Y + m_DrawOrg.Y);
 
+				float sizeC = (float)Math.Pow(((float)Math.Pow((TerminatePoints[1].X - TerminatePoints[0].X) * proportionX, 2)) + ((float)Math.Pow((TerminatePoints[1].Y - TerminatePoints[0].Y) * proportionY, 2)), 0.5) * 2;
+				sizeAct = (float)Math.Round(sizeC, 2, MidpointRounding.AwayFromZero);
 				// Draw Arrow
 				if (m_direction != 2)
 				{
@@ -530,7 +571,6 @@ namespace AGVSim
 					e.DrawLine(SelectPen, ArrowTail2.X + m_DrawOrg.X, ArrowTail2.Y + m_DrawOrg.Y,
 										  ArrowHead.X + m_DrawOrg.X, ArrowHead.Y + m_DrawOrg.Y);
 
-
 					SelectPen = newPen_red;
 					tmp_rect1 = m_small_circle;
 					tmp_rect1.X = m_CheckTrafficPt.X + m_small_circle.X/2;
@@ -539,6 +579,7 @@ namespace AGVSim
 					tmp.X = tmp_rect1.X + m_DrawOrg.X;
 					tmp.Y = tmp_rect1.Y + m_DrawOrg.Y;
 					e.DrawEllipse(SelectPen, tmp);
+
 				}
 				else
 				{
@@ -588,6 +629,7 @@ namespace AGVSim
 				tmp_Arc.Y = CircleCenter.Y + m_DrawOrg.Y - m_ArcRadius;
 				tmp_Arc.Width = m_ArcRadius*2;
 				tmp_Arc.Height = m_ArcRadius*2;
+
 
 				e.DrawArc(SelectPen, tmp_Arc, (float)(-ArcStartAngle), (float)(-ArcRangeAngle));
 
@@ -667,6 +709,18 @@ namespace AGVSim
 					tmp_Arc.Height = m_ArcRadius*2;
 
 					e.DrawArc(SelectPen, tmp_Arc, (float)(-ArcStartAngle), (float)(-ArcRangeAngle));
+
+
+
+
+
+
+
+
+
+
+
+
 
 					//pDC->MoveTo(CornerNeighbors[0] + m_DrawOrg);
 

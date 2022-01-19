@@ -86,6 +86,8 @@ namespace DWG_MAPVIEW
             Form1.form1.pictureBoxMap.Size = Image.FromFile(url + "/model_map.jpg").Size;
             JPG_PictureBox.Width = JPG_PictureBox.Width * 60 / 100;
             JPG_PictureBox.Height = JPG_PictureBox.Height * 60 / 100;
+            Form1.form1.pictureBoxMap.Width = Form1.form1.pictureBoxMap.Width * 50 / 100;
+            Form1.form1.pictureBoxMap.Height = Form1.form1.pictureBoxMap.Height * 50 / 100;
 
             /*
             var dirList = (from d in new System.IO.DirectoryInfo(@"C:/Users/og826/Desktop/專案用CAD檔").GetDirectories()
