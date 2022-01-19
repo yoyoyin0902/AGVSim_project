@@ -496,7 +496,7 @@ namespace AGVSim
 			Color c4 = Color.FromArgb(255, 0, 255, 0);
 			StringColor = Color.FromArgb(255, 0, 0, 0);
 			Pen newPen_red = new Pen(c1, 1);
-			Pen newPen_blue = new Pen(c2, 1);
+			Pen newPen_blue = new Pen(c2, 5);
 			Pen newPen_path2from = new Pen(c3, 1);
 			Pen newPen_path2end = new Pen(c4, 1);
 			brushString = new SolidBrush(StringColor);
