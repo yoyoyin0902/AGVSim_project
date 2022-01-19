@@ -491,6 +491,7 @@ namespace AGVSim
 		int MeasuringAble = 0;
 		string url = System.Environment.CurrentDirectory;
 		float sizeAct;
+		float sizeC;
 
 		public void Draw(Graphics e)
 		{
@@ -526,6 +527,9 @@ namespace AGVSim
 			str.Close();
 
 
+			sizeC = (float)Math.Pow(((float)Math.Pow((TerminatePoints[1].X - TerminatePoints[0].X) * proportionX, 2)) + ((float)Math.Pow((TerminatePoints[1].Y - TerminatePoints[0].Y) * proportionY, 2)), 0.5) * 2;
+			sizeAct = (float)Math.Round(sizeC, 2, MidpointRounding.AwayFromZero);
+
 			ss = String.Format("{0:D2}-{1:D}", m_ID, OnPathAGVs.Count + "  " + sizeAct.ToString() + "m");
 
 			Color c1 = Color.FromArgb(255, 255, 0, 0);
@@ -533,10 +537,10 @@ namespace AGVSim
 			Color c3 = Color.FromArgb(255, 255, 0, 255);
 			Color c4 = Color.FromArgb(255, 0, 255, 0);
 			StringColor = Color.FromArgb(255, 0, 0, 0);
-			Pen newPen_red = new Pen(c1, 1);
-			Pen newPen_blue = new Pen(c2, 3);
-			Pen newPen_path2from = new Pen(c3, 1);
-			Pen newPen_path2end = new Pen(c4, 1);
+			Pen newPen_red = new Pen(c1, 2);
+			Pen newPen_blue = new Pen(c2, 2);
+			Pen newPen_path2from = new Pen(c3, 2);
+			Pen newPen_path2end = new Pen(c4, 2);
 			brushString = new SolidBrush(StringColor);
 			if (b_Selected)
 				SelectPen = newPen_red;
@@ -556,20 +560,23 @@ namespace AGVSim
 
 				e.DrawLine(SelectPen, TerminatePoints[0].X + m_DrawOrg.X, TerminatePoints[0].Y + m_DrawOrg.Y,
 									  TerminatePoints[1].X + m_DrawOrg.X, TerminatePoints[1].Y + m_DrawOrg.Y);
-
-				float sizeC = (float)Math.Pow(((float)Math.Pow((TerminatePoints[1].X - TerminatePoints[0].X) * proportionX, 2)) + ((float)Math.Pow((TerminatePoints[1].Y - TerminatePoints[0].Y) * proportionY, 2)), 0.5) * 2;
+				/*
+				sizeC = (float)Math.Pow(((float)Math.Pow((TerminatePoints[1].X - TerminatePoints[0].X) * proportionX, 2)) + ((float)Math.Pow((TerminatePoints[1].Y - TerminatePoints[0].Y) * proportionY, 2)), 0.5) * 2;
 				sizeAct = (float)Math.Round(sizeC, 2, MidpointRounding.AwayFromZero);
+				*/
 				// Draw Arrow
 				if (m_direction != 2)
 				{
 					e.DrawLine(SelectPen, ArrowHead.X + m_DrawOrg.X, ArrowHead.Y + m_DrawOrg.Y,
 										  ArrowTail1.X + m_DrawOrg.X, ArrowTail1.Y + m_DrawOrg.Y);
-
+						
 					e.DrawLine(SelectPen, ArrowTail1.X + m_DrawOrg.X, ArrowTail1.Y + m_DrawOrg.Y,
 										  ArrowTail2.X + m_DrawOrg.X, ArrowTail2.Y + m_DrawOrg.Y);
 
 					e.DrawLine(SelectPen, ArrowTail2.X + m_DrawOrg.X, ArrowTail2.Y + m_DrawOrg.Y,
 										  ArrowHead.X + m_DrawOrg.X, ArrowHead.Y + m_DrawOrg.Y);
+
+					
 
 					SelectPen = newPen_red;
 					tmp_rect1 = m_small_circle;

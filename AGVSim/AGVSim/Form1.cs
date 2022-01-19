@@ -356,24 +356,6 @@ namespace AGVSim
 
 
 
-        private void Measuring_Size_Click(object sender, EventArgs e)
-        {/*
-            MeasuringAble++;
-            Start.X = 0;
-            Start.Y = 0;
-            End.X = 0;
-            End.Y = 0;
-            sizeActact = 0;
-            Actral_Size_Lable.Text = sizeActact.ToString();
-            m_icon_sel = 0;
-            m_grid = false;
-            pictureBoxMap.Invalidate();*/
-        }
-
-
-        private void Actral_Size_Lable_TextChanged(object sender, EventArgs e)
-        {
-        }
 
         /// <summary>
         /// //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -545,7 +527,6 @@ namespace AGVSim
         private void onButtonUpdate()
         {
             MeasuringAble = 0;
-            Actral_Size_Lable.Text = "0";
 
 
             if (m_icon_sel == 0)

@@ -18,6 +18,7 @@ namespace AGVSim
         Form1 f1 = new Form1();
         static string url = System.Environment.CurrentDirectory;
         public static string station_img_path = url + "/icon/pic_Station.png";
+        public static string connection_img_path = url + "/icon/pic_Connection.png";
         //public static string AGV_img_path = @"E:/派車模擬系統/AGVSim/icon/pic_difcar.png";
         public static string AGV_img_path = url + "/icon/pic_difcar.png";
 
