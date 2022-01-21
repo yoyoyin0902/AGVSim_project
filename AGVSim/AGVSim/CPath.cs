@@ -532,11 +532,22 @@ namespace AGVSim
 
 			ss = String.Format("{0:D2}-{1:D}", m_ID, OnPathAGVs.Count + "  " + sizeAct.ToString() + "m");
 
+
+			//////origin file/////
+			/*
 			Color c1 = Color.FromArgb(255, 255, 0, 0);
 			Color c2 = Color.FromArgb(255, 0, 0, 255);
 			Color c3 = Color.FromArgb(255, 255, 0, 255);
 			Color c4 = Color.FromArgb(255, 0, 255, 0);
 			StringColor = Color.FromArgb(255, 0, 0, 0);
+			*/
+
+			Color c1 = Color.FromArgb(255, 0, 0, 255);
+			Color c2 = Color.FromArgb(255, 0, 0, 255);
+			Color c3 = Color.FromArgb(255, 0, 0, 255);
+			Color c4 = Color.FromArgb(255, 0, 0, 255);
+			StringColor = Color.FromArgb(255, 0, 0, 0);
+
 			Pen newPen_red = new Pen(c1, 2);
 			Pen newPen_blue = new Pen(c2, 2);
 			Pen newPen_path2from = new Pen(c3, 2);
@@ -555,11 +566,12 @@ namespace AGVSim
 			{
 
 				// Draw Vetcor [0] -> [1]
-				Font drawFont = new System.Drawing.Font("Arial", 10, FontStyle.Bold);
-				e.DrawString(ss, drawFont, brushString, (TerminatePoints[0].X + TerminatePoints[1].X) / 2 + m_DrawOrg.X ,(TerminatePoints[0].Y + TerminatePoints[1].Y) / 2 + m_DrawOrg.Y);
+				Font drawFont = new System.Drawing.Font("Arial", 12, FontStyle.Bold);
+				e.DrawString(ss, drawFont, brushString, (TerminatePoints[0].X + TerminatePoints[1].X) / 2 + m_DrawOrg.X - 50, (TerminatePoints[0].Y + TerminatePoints[1].Y) / 2 + m_DrawOrg.Y + 5);
 
 				e.DrawLine(SelectPen, TerminatePoints[0].X + m_DrawOrg.X, TerminatePoints[0].Y + m_DrawOrg.Y,
-									  TerminatePoints[1].X + m_DrawOrg.X, TerminatePoints[1].Y + m_DrawOrg.Y);
+							  TerminatePoints[1].X + m_DrawOrg.X, TerminatePoints[1].Y + m_DrawOrg.Y);
+				
 				/*
 				sizeC = (float)Math.Pow(((float)Math.Pow((TerminatePoints[1].X - TerminatePoints[0].X) * proportionX, 2)) + ((float)Math.Pow((TerminatePoints[1].Y - TerminatePoints[0].Y) * proportionY, 2)), 0.5) * 2;
 				sizeAct = (float)Math.Round(sizeC, 2, MidpointRounding.AwayFromZero);
@@ -996,8 +1008,10 @@ namespace AGVSim
 									   (int)((TerminatePoints[0].Y + CornerNeighbors[0].Y) / 2.0f));
 				temPT.X = ArrowHead.X - (int)(arrow_len * uintvect_x);
 				temPT.Y = ArrowHead.Y - (int)(arrow_len * uintvect_y);
+				/*
 				temPT.X = ArrowHead.X - (int)(arrow_len * uintvect_x);
 				temPT.Y = ArrowHead.Y - (int)(arrow_len * uintvect_y);
+				*/
 				ArrowTail1.X = temPT.X + (int)(0.5 * arrow_len * uintvect_y);
 				ArrowTail1.Y = temPT.Y + (int)(0.5 * arrow_len * -uintvect_x);
 				ArrowTail2.X = temPT.X - (int)(0.5 * arrow_len * uintvect_y);

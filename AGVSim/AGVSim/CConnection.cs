@@ -7,12 +7,13 @@ using CPoint = System.Drawing.Point;
 using CRect = System.Drawing.Rectangle;
 using System.Drawing;
 using CString = System.String;
-using System.Threading;
+
 
 namespace AGVSim
 {
-    public class CStop
-    {
+    public class CConnection
+	{
+        
 		// Attributes
 		public int m_ID;
 		public int m_size = 10;
@@ -27,7 +28,7 @@ namespace AGVSim
 		public int m_AGV_ID = 0;
 		public bool m_Failure = false;
 		public CPoint m_center;
-		public CRect m_obj_rect, m_obj_rect2, m_rect_station , m_rect_station2, m_rect_station_large, m_obj_rect_large, m_TagRect, TextR;
+		public CRect m_obj_rect, m_obj_rect2, m_rect_station, m_rect_station2, m_rect_station_large, m_obj_rect_large, m_TagRect, TextR;
 		// Modify 2020/02/17 ---------Start-------------------------
 		public int m_ArcNumber;
 		public CPoint m_DrawOrg;
@@ -40,20 +41,19 @@ namespace AGVSim
 		public CString m_msg;
 		public List<double> AdjacentCost = new List<double>();
 		public List<int> AdjacentPathID = new List<int>();
-		public List<int> AdjacentStopID = new List<int>();
+		public List<int> AdjacentConnectionID = new List<int>();
 		public List<int> PARTS_QUEUE = new List<int>();
 		//Image img = global::AGVSim.Properties.Resources.pic_Station;
-		Image img = Image.FromFile(Param.station_img_path); //要貼的圖 
-		Image imgconnection = Image.FromFile(Param.connection_img_path);
+		Image img = Image.FromFile(Param.connection_img_path); //要貼的圖 
 
 
 
 
-		public CStop()
+		public CConnection()
 		{
-			m_rect_station = new CRect(-m_size, -m_size, m_size*2, m_size*2);
-			m_rect_station2 = new CRect(-m_size+m_offest, -m_size+m_offest, (m_size- m_offest)*2, (m_size - m_offest)*2);
-			m_rect_station_large = new CRect(-m_size, -m_size, (m_size + 2 * m_offest)*2, (m_size + 2 * m_offest)*2);
+			m_rect_station = new CRect(-m_size, -m_size, m_size * 2, m_size * 2);
+			m_rect_station2 = new CRect(-m_size + m_offest, -m_size + m_offest, (m_size - m_offest) * 2, (m_size - m_offest) * 2);
+			m_rect_station_large = new CRect(-m_size, -m_size, (m_size + 2 * m_offest) * 2, (m_size + 2 * m_offest) * 2);
 			TextR = new CRect(0, 0, 50, 20);
 		}
 
@@ -80,7 +80,7 @@ namespace AGVSim
 		}
 
 
-		public void AddObj(int id, int type, CPoint pt) 
+		public void AddObj(int id, int type, CPoint pt)
 		{
 			m_ID = id;
 			m_center = pt;
@@ -105,8 +105,8 @@ namespace AGVSim
 			Color c = Color.FromArgb(255, 0, 0, 0);
 			Color c2 = Color.FromArgb(255, 255, 0, 255);
 			Color c3 = Color.FromArgb(255, 128, 0, 0);
-			Color c4 = Color.FromArgb(255, 0, 0, 0);
-			Color c5 = Color.FromArgb(255, 0, 0, 0);
+			Color c4 = Color.FromArgb(255, 255, 128, 0);
+			Color c5 = Color.FromArgb(255, 255, 0, 128);
 			Color c6 = Color.FromArgb(255, 170, 170, 80);
 
 			Pen newPen_none = new Pen(c, 1);
@@ -157,24 +157,15 @@ namespace AGVSim
 
 
 			//-----------------------------------------------------------------------------------------
-			Form1 f1 = new Form1();
-
 
 			e.DrawImage(img, tmp.X, tmp.Y);
 			e.ResetTransform();
 
-			/*
-			e.DrawImage(imgconnection, tmp.X, tmp.Y);
-			e.ResetTransform(); 
-			*/
-
-						
-		
 			//-----------------------------------------------------------------------------------------
 
 			//e.DrawEllipse(SelectPen, tmp);
-			Font drawFont = new System.Drawing.Font("Arial", 12);
-			e.DrawString(cap, drawFont, SelectBrush, m_obj_rect.Left + 5 + m_DrawOrg.X-10, m_obj_rect.Bottom + 4 + m_DrawOrg.Y);
+			Font drawFont = new System.Drawing.Font("Arial", 10);
+			e.DrawString(cap, drawFont, SelectBrush, m_obj_rect.Left + 5 + m_DrawOrg.X - 10, m_obj_rect.Bottom + 4 + m_DrawOrg.Y);
 
 			switch (m_type)
 			{
@@ -196,10 +187,11 @@ namespace AGVSim
 				default:
 					break;
 			} // End Switch
-		    //e.DrawString(cat, drawFont, SelectBrush, m_obj_rect.Right - 1 + m_DrawOrg.X , m_obj_rect.Top - 1 + m_DrawOrg.Y);
+			  //	e.DrawString(cat, drawFont, SelectBrush, m_obj_rect.Right - 1 + m_DrawOrg.X , m_obj_rect.Top - 1 + m_DrawOrg.Y);
 			SelectPen = newPen_none;
 			StringColor = Color.FromArgb(255, 0, 0, 0);
 			// ShowTokens(pDC);
 		}
 	}
 }
+

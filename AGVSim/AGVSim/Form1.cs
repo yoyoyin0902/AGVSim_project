@@ -24,7 +24,7 @@ namespace AGVSim
     public partial class Form1 : Form
     {
         bool m_grid, m_station, m_connection, m_path, m_word;
-        int m_icon_sel; // 0: Select 1:Station 2:Connect 3:Traffic 4:Floor 5 :Line 6:90Line 7:Arc
+        public int m_icon_sel; // 0: Select 1:Station 2:Connect 3:Traffic 4:Floor 5 :Line 6:90Line 7:Arc
         int grid_x;
         int grid_y;
         CRect WorkArea;
@@ -66,6 +66,7 @@ namespace AGVSim
         // Operations
         public List<CPath> Path_List = new List<CPath>();
         public List<CStop> Stop_List = new List<CStop>();
+        public List<CConnection> Connection_List = new List<CConnection>();
         public List<CVehicle> Vehicle_List = new List<CVehicle>();
         CPath tmp_Path = new CPath();
         int ArcPathRadius;
@@ -113,7 +114,7 @@ namespace AGVSim
        {
             /*
 
-           if (e.Delta >= 0) 
+           if (e.Delta >=.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 0) 
            {
                this.pictureBoxMap.Height = (int)(this.pictureBoxMap.Height * 1.1);                
                this.pictureBoxMap.Width = (int)(this.pictureBoxMap.Width * 1.1);
@@ -225,7 +226,7 @@ namespace AGVSim
                                 // A Vehicle
                                 CVehicle pVeh = new CVehicle();
                                 pVeh.m_DrawOrg = m_DrawOrg;
-                                CStop tmp = Stop_List[Cap_ID];
+                                CStop tmp = Stop_List[Cap_ID];                                
                                 pVeh.AddObj(GetID(30), ref tmp, 0, 0, m_AGV_Speed, m_AGV_AngularSpeed); // 30: Type Vehicle
                                 Stop_List[Cap_ID] = tmp;
                                 if (!sqlserver.Check_AGV(pVeh.m_ID))
@@ -426,7 +427,7 @@ namespace AGVSim
             onButtonUpdate();
         }
 
-        private void onButton_Station_Click(object sender, EventArgs e)
+        public void onButton_Station_Click(object sender, EventArgs e)
         {
             m_icon_sel = 1;
             onButtonUpdate();
@@ -2931,9 +2932,8 @@ namespace AGVSim
 
         }
 
-        private void pictureBoxMap_Click(object sender, EventArgs e)
+        public void pictureBoxMap_Click(object sender, EventArgs e)
         {
-
         }
 
 
@@ -2964,12 +2964,13 @@ namespace AGVSim
                     }
                 case 2: // Connection
                     {
+                        CConnection pConnection = new CConnection();
                         CStop pStop = new CStop();
                         pStop.m_DrawOrg = m_DrawOrg;
                         CPoint tmp = new CPoint();
                         tmp.X = point.X - m_DrawOrg.X;
                         tmp.Y = point.Y - m_DrawOrg.Y;
-                        pStop.AddObj(GetID(10), 1, tmp); // 10: Type Stop -> Station/ Connection; 1 Connection Stop
+                        pStop.AddObj(GetID(10), 0, tmp); // 10: Type Stop -> Station/ Connection; 1 Connection Stop
                         Stop_List.Add(pStop);
                         break;
                     }
@@ -3320,8 +3321,11 @@ namespace AGVSim
             if (m_grid)
             {
                 int c_x = 0, c_y = 0;
+
+ 
                 Color c = Color.FromArgb(255, 128, 168, 168);
                 Color c2 = Color.FromArgb(255, 200, 200, 200);
+
                 Pen newPen = new Pen(c, 1);
                 Pen newPen2 = new Pen(c2, 1);
                 while (c_x < VIEW_X)

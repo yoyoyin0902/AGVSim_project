@@ -13,12 +13,12 @@ namespace AGVSim
     public class sqlserver
     {
         public List<COrder> ReceiveOrder = new List<COrder>();
-        public static string server_name = "LAPTOP-FATAMY\\SQLEXPRESS";//server 名稱
+        public static string server_name = "DESKTOP-OA0BU9D\\MSSQLSEVER_2019";//server 名稱
         public static string Database_name = "AGVSim";//資料庫(存站點還有路徑的)
         public static string Database_table_AGV_name = "AGV";
         public static string Database_table_Path_name = "Path";
         public static string Database_table_Stop_name = "Stop";
-        public static string Database_table_Order_name;// = "TOrder";
+        public static string Database_table_Order_name = "Order";
         public static string Database_table_Order_Update_name;// = "UpOrder";
         public static string userName = "sa";
         public static string password = "ivam";
@@ -75,7 +75,7 @@ namespace AGVSim
                     sqlcon.Open();
                     //foreach(COrder mOrder in vOrder)
                     //{
-                        String cmdText = "INSERT INTO [dbo].[" + Database_table_Order_name + "] (Product_ID, Quantity, Due, Priority, Status, Done)" +
+                        String cmdText = "INSERT INTO [AGVSim].[dbo].[" + Database_table_Order_name + "] (Product_ID, Quantity, Due, Priority, Status, Done)" +
                             "VALUES(@Product_ID, @Quantity, @Due, @Priority, @Status, @Done)";         
                     using (SqlCommand cmd = new SqlCommand(cmdText, sqlcon))
                     {
@@ -111,7 +111,7 @@ namespace AGVSim
                 {
                     sqlcon.Open();
 
-                    String cmdText = "select * from " + Database_table_Order_name + ""; // Where Map_Location=@Map_location";
+                    String cmdText = "SELECT * FROM [AGVSim].[dbo].[" + Database_table_Order_name + "]"; // Where Map_Location=@Map_location";
 
                     using (SqlCommand cmd = new SqlCommand(cmdText, sqlcon))
                     {
