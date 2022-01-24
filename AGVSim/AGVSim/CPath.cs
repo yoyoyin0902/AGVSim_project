@@ -487,20 +487,19 @@ namespace AGVSim
 		}
 
 
-		float ProportionSize, sizeActact, proportionX, proportionY;
-		int MeasuringAble = 0;
+		float proportionX, proportionY;
 		string url = System.Environment.CurrentDirectory;
 		float sizeAct;
 		float sizeC;
-
+		public float cpsizebox;
+		
+	
 		public void Draw(Graphics e)
 		{
-
 			CRect tmp_rect1 = new CRect();
 			CRect tmp_rect2 = new CRect();
 			StringColor = Color.FromArgb(255, 0, 64, 64);
-
-
+			
 			StreamReader str = new StreamReader(url + "/Parameter.txt");
 			string ReadLine1, ReadLine2, ReadLine3;
 			ReadLine1 = str.ReadLine();
@@ -527,10 +526,12 @@ namespace AGVSim
 			str.Close();
 
 
-			sizeC = (float)Math.Pow(((float)Math.Pow((TerminatePoints[1].X - TerminatePoints[0].X) * proportionX, 2)) + ((float)Math.Pow((TerminatePoints[1].Y - TerminatePoints[0].Y) * proportionY, 2)), 0.5) * 2;
+			sizeC = (float)Math.Pow(((float)Math.Pow((TerminatePoints[1].X - TerminatePoints[0].X) * proportionX, 2)) + 
+				((float)Math.Pow((TerminatePoints[1].Y - TerminatePoints[0].Y) * proportionY, 2)), 0.5) * 195 / 100 / cpsizebox;
 			sizeAct = (float)Math.Round(sizeC, 2, MidpointRounding.AwayFromZero);
 
 			ss = String.Format("{0:D2}-{1:D}", m_ID, OnPathAGVs.Count + "  " + sizeAct.ToString() + "m");
+			
 
 
 			//////origin file/////
@@ -562,6 +563,7 @@ namespace AGVSim
 			else
 				SelectPen = newPen_blue;
 
+
 			if (m_type == 0) // Line Path
 			{
 
@@ -571,7 +573,9 @@ namespace AGVSim
 
 				e.DrawLine(SelectPen, TerminatePoints[0].X + m_DrawOrg.X, TerminatePoints[0].Y + m_DrawOrg.Y,
 							  TerminatePoints[1].X + m_DrawOrg.X, TerminatePoints[1].Y + m_DrawOrg.Y);
-				
+
+				Console.WriteLine("RRR" + cpsizebox);
+
 				/*
 				sizeC = (float)Math.Pow(((float)Math.Pow((TerminatePoints[1].X - TerminatePoints[0].X) * proportionX, 2)) + ((float)Math.Pow((TerminatePoints[1].Y - TerminatePoints[0].Y) * proportionY, 2)), 0.5) * 2;
 				sizeAct = (float)Math.Round(sizeC, 2, MidpointRounding.AwayFromZero);
@@ -598,6 +602,7 @@ namespace AGVSim
 					tmp.X = tmp_rect1.X + m_DrawOrg.X;
 					tmp.Y = tmp_rect1.Y + m_DrawOrg.Y;
 					e.DrawEllipse(SelectPen, tmp);
+
 
 				}
 				else

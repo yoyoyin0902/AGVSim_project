@@ -99,10 +99,8 @@ namespace AGVSim
 
 
         private void pictureBoxMap_MouseEnter(object sender, EventArgs e)
-        {
-            
+        {            
            this.pictureBoxMap.Focus();
-
         }
 
        private void pictureBoxMap_MouseLeave(object sender, EventArgs e)
@@ -110,25 +108,50 @@ namespace AGVSim
            this.pictureBoxMap.Parent.Focus();
        }
 
-       private void PictureBox_MouseWheel(object sender, MouseEventArgs e)
-       {
-            /*
+        public float sizebox = 1;
+        int PictureBoxMapHeight, PictureBoxMapWidth;
+        int c = 0;
 
-           if (e.Delta >=.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 0) 
-           {
-               this.pictureBoxMap.Height = (int)(this.pictureBoxMap.Height * 1.1);                
-               this.pictureBoxMap.Width = (int)(this.pictureBoxMap.Width * 1.1);
-               Console.WriteLine("放大");
-           }
-           else
-           {
-               this.pictureBoxMap.Height = (int)(this.pictureBoxMap.Height * 0.9);
-               this.pictureBoxMap.Width = (int)(this.pictureBoxMap.Width * 0.9);
-               Console.WriteLine("縮小");
-           }
+        public void PictureBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            CPoint point = new CPoint(e.X, e.Y);
 
-            */
-       }
+            if (c == 0)
+            {
+                PictureBoxMapHeight = pictureBoxMap.Height;
+                PictureBoxMapWidth = pictureBoxMap.Width;
+                c = 1;
+            }
+            
+
+
+            if (e.Delta >= 1)
+            {
+                this.pictureBoxMap.Height = PictureBoxMapHeight;
+                this.pictureBoxMap.Width = PictureBoxMapWidth;
+                sizebox = (float)(sizebox * 1.1);
+                this.pictureBoxMap.Height = (int)(pictureBoxMap.Height * sizebox);
+                this.pictureBoxMap.Width = (int)(pictureBoxMap.Width * sizebox);
+                //Console.WriteLine("放大");
+                //Console.WriteLine(sizebox);
+                //Console.WriteLine(pictureBoxMap.Height);
+                //Console.WriteLine(pictureBoxMap.Width);
+            }
+            else
+            {
+                this.pictureBoxMap.Height = PictureBoxMapHeight;
+                this.pictureBoxMap.Width = PictureBoxMapWidth;
+                sizebox = (float)(sizebox / 1.1);
+                this.pictureBoxMap.Height = (int)(pictureBoxMap.Height * sizebox);
+                this.pictureBoxMap.Width = (int)(pictureBoxMap.Width * sizebox);
+                //Console.WriteLine("縮小");
+                //Console.WriteLine(sizebox);
+                //Console.WriteLine(pictureBoxMap.Height);
+                //Console.WriteLine(pictureBoxMap.Width);
+            }
+
+
+        }
 
 
         
@@ -2952,8 +2975,9 @@ namespace AGVSim
             switch (m_icon_sel)
             {
                 case 1: // Station
-                    {
+                    {                        
                         CStop pStop = new CStop();
+                        pStop.CSm_cion_sel = m_icon_sel;
                         pStop.m_DrawOrg = m_DrawOrg;
                         CPoint tmp = new CPoint();
                         tmp.X = point.X - m_DrawOrg.X;
@@ -2964,8 +2988,8 @@ namespace AGVSim
                     }
                 case 2: // Connection
                     {
-                        CConnection pConnection = new CConnection();
                         CStop pStop = new CStop();
+                        pStop.CSm_cion_sel = m_icon_sel;
                         pStop.m_DrawOrg = m_DrawOrg;
                         CPoint tmp = new CPoint();
                         tmp.X = point.X - m_DrawOrg.X;
@@ -2996,6 +3020,7 @@ namespace AGVSim
                                 tmp_Path.StationIDs[1] = tmp_id;
                                 // Greate a New Path
                                 CPath pPath = new CPath();
+                                pPath.cpsizebox = sizebox;
                                 pPath.m_DrawOrg = m_DrawOrg;
                                 // Add a Path with the info of
                                 // Path ID, Two Station IDs and a Conner Point

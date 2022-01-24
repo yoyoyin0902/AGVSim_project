@@ -468,7 +468,7 @@
             // pictureBoxMap
             // 
             this.pictureBoxMap.BackColor = System.Drawing.Color.White;
-            this.pictureBoxMap.Location = new System.Drawing.Point(82, 67);
+            this.pictureBoxMap.Location = new System.Drawing.Point(4, 67);
             this.pictureBoxMap.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBoxMap.Name = "pictureBoxMap";
             this.pictureBoxMap.Size = new System.Drawing.Size(1150, 617);

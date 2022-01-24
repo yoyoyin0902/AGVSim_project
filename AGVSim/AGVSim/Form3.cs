@@ -17,7 +17,7 @@ namespace DWG_MAPVIEW
 
     public partial class Form4 : Form
     {
-        int c = 0, d = 0; //c : 判斷選取框調整按鈕是否有作用
+        public int c = 0, d = 0; //c : 判斷選取框調整按鈕是否有作用
         int finalX = 0, finalY = 0;
         int Pen_Button_adjust = 1;
         int Pen_Bar_adjust = 3;
@@ -68,7 +68,7 @@ namespace DWG_MAPVIEW
         {
         }
 
-
+        int form1picboxmaph, form1picboxmapw;
 
         private void Turn_to_Form2_Click(object sender, EventArgs e)
         {
@@ -76,9 +76,26 @@ namespace DWG_MAPVIEW
             f6.Visible = true;
         }
 
-        private void ReadJPG_Click(object sender, EventArgs e)
+        
+        
+
+        public void ReadJPG_Click(object sender, EventArgs e)
         {
-           
+            this.JPG_PictureBox.Image = Image.FromFile(url + "/model_map.jpg");
+            JPG_PictureBox.Size = Image.FromFile(url + "/model_map.jpg").Size;
+            JPG_PictureBox.Width = JPG_PictureBox.Width * 60 / 100;
+            JPG_PictureBox.Height = JPG_PictureBox.Height * 60 / 100;
+            if (c==0)
+            {
+                form1picboxmaph = Form1.form1.pictureBoxMap.Height; 
+                form1picboxmapw = Form1.form1.pictureBoxMap.Width;
+                c = 1;
+            }
+            Form1.form1.pictureBoxMap.Image = Image.FromFile(url + "/model_map.jpg");
+            Form1.form1.pictureBoxMap.Width = form1picboxmapw;
+            Form1.form1.pictureBoxMap.Height = form1picboxmaph;
+
+            /*
             if (c == 0) c = 1;
             this.JPG_PictureBox.Image = Image.FromFile(url+ "/model_map.jpg");
             JPG_PictureBox.Size = Image.FromFile(url + "/model_map.jpg").Size;
@@ -86,8 +103,10 @@ namespace DWG_MAPVIEW
             Form1.form1.pictureBoxMap.Size = Image.FromFile(url + "/model_map.jpg").Size;
             JPG_PictureBox.Width = JPG_PictureBox.Width * 60 / 100;
             JPG_PictureBox.Height = JPG_PictureBox.Height * 60 / 100;
-            Form1.form1.pictureBoxMap.Width = Form1.form1.pictureBoxMap.Width * 50 / 100;
+            Form1.form1.pictureBoxMap.Width = Form1.form1.pictureBoxMap.Width * 70 / 100;
             Form1.form1.pictureBoxMap.Height = Form1.form1.pictureBoxMap.Height * 50 / 100;
+            */
+
 
             /*
             var dirList = (from d in new System.IO.DirectoryInfo(@"C:/Users/og826/Desktop/專案用CAD檔").GetDirectories()

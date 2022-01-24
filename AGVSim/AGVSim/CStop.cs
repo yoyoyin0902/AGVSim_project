@@ -43,8 +43,7 @@ namespace AGVSim
 		public List<int> AdjacentStopID = new List<int>();
 		public List<int> PARTS_QUEUE = new List<int>();
 		//Image img = global::AGVSim.Properties.Resources.pic_Station;
-		Image img = Image.FromFile(Param.station_img_path); //要貼的圖 
-		Image imgconnection = Image.FromFile(Param.connection_img_path);
+
 
 
 
@@ -98,9 +97,20 @@ namespace AGVSim
 			TextR.Offset(new Point(m_obj_rect.Left + 5, m_obj_rect.Bottom + 4));
 			m_TagRect = TextR;
 		}
+		Image img = Image.FromFile(Param.station_img_path);
+		public int CSm_cion_sel;
 
 		public void Draw(Graphics e)
 		{
+			Form1 f1 = new Form1();
+			if (CSm_cion_sel == 1)
+			{
+				img = Image.FromFile(Param.station_img_path); //要貼的圖 
+			}
+			if (CSm_cion_sel == 2)
+			{
+				img = Image.FromFile(Param.connection_img_path);
+			}
 
 			Color c = Color.FromArgb(255, 0, 0, 0);
 			Color c2 = Color.FromArgb(255, 255, 0, 255);
@@ -157,8 +167,6 @@ namespace AGVSim
 
 
 			//-----------------------------------------------------------------------------------------
-			Form1 f1 = new Form1();
-
 
 			e.DrawImage(img, tmp.X, tmp.Y);
 			e.ResetTransform();
