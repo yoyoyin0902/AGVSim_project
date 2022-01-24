@@ -114,6 +114,10 @@ namespace AGVSim
 
         public void PictureBox_MouseWheel(object sender, MouseEventArgs e)
         {
+            CPath cp = new CPath();
+            cp.ss = 
+            cp.ss  = String.Format("{0:D2}-{1:D}", cp.m_ID, cp.OnPathAGVs.Count + "  " + cp.sizeAct.ToString() + "m");
+
             CPoint point = new CPoint(e.X, e.Y);
 
             if (c == 0)
@@ -150,6 +154,9 @@ namespace AGVSim
                 //Console.WriteLine(pictureBoxMap.Width);
             }
 
+            Array stoplist;
+            stoplist = Stop_List.ToArray();
+            Console.WriteLine("RRR" + stoplist);
 
         }
 
@@ -157,13 +164,13 @@ namespace AGVSim
         
         private void pictureBoxMap_MouseClick(object sender, MouseEventArgs e)
        {
+            //切割資料
             StreamReader str = new StreamReader(url + "/Parameter.txt");
             string ReadLine1, ReadLine2, ReadLine3;
             ReadLine1 = str.ReadLine();
             ReadLine2 = str.ReadLine();
             ReadLine3 = str.ReadLine();
 
-            //切割資料
             string[] originsize = ReadLine1.Split(' ');
             string[] framesize = ReadLine2.Split(' ');
             string[] actsize = ReadLine3.Split(' ');
@@ -477,7 +484,7 @@ namespace AGVSim
         private void onButton_Line_Click(object sender, EventArgs e)
         {
             m_icon_sel = 5;
-            onButtonUpdate();
+            onButtonUpdate();            
         }
 
         private void onButton_90Line_Click(object sender, EventArgs e)

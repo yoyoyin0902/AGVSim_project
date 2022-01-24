@@ -487,9 +487,9 @@ namespace AGVSim
 		}
 
 
-		float proportionX, proportionY;
-		string url = System.Environment.CurrentDirectory;
-		float sizeAct;
+		public float proportionX, proportionY;
+		public string url = System.Environment.CurrentDirectory;
+		public float sizeAct;
 		float sizeC;
 		public float cpsizebox;
 		
