@@ -508,7 +508,7 @@ namespace AGVSim
 
 			//切割資料
 			string[] originsize = ReadLine1.Split(' ');
-			string[] framesize = ReadLine2.Split(' ');
+			string[] framesize = ReadLine2.Split(' '); 
 			string[] actsize = ReadLine3.Split(' ');
 			//儲存XY
 			string frameX = framesize[0];
@@ -530,9 +530,7 @@ namespace AGVSim
 				((float)Math.Pow((TerminatePoints[1].Y - TerminatePoints[0].Y) * proportionY, 2)), 0.5) * 195 / 100 / cpsizebox;
 			sizeAct = (float)Math.Round(sizeC, 2, MidpointRounding.AwayFromZero);
 
-			ss = String.Format("{0:D2}-{1:D}", m_ID, OnPathAGVs.Count + "  " + sizeAct.ToString() + "m");
-			
-
+			ss = String.Format("{0:D2}-{1:D}", m_ID, OnPathAGVs.Count + "\n" + sizeAct.ToString() + "m");
 
 			//////origin file/////
 			/*
@@ -574,7 +572,6 @@ namespace AGVSim
 				e.DrawLine(SelectPen, TerminatePoints[0].X + m_DrawOrg.X, TerminatePoints[0].Y + m_DrawOrg.Y,
 							  TerminatePoints[1].X + m_DrawOrg.X, TerminatePoints[1].Y + m_DrawOrg.Y);
 
-				Console.WriteLine("RRR" + cpsizebox);
 
 				/*
 				sizeC = (float)Math.Pow(((float)Math.Pow((TerminatePoints[1].X - TerminatePoints[0].X) * proportionX, 2)) + ((float)Math.Pow((TerminatePoints[1].Y - TerminatePoints[0].Y) * proportionY, 2)), 0.5) * 2;
@@ -591,18 +588,6 @@ namespace AGVSim
 
 					e.DrawLine(SelectPen, ArrowTail2.X + m_DrawOrg.X, ArrowTail2.Y + m_DrawOrg.Y,
 										  ArrowHead.X + m_DrawOrg.X, ArrowHead.Y + m_DrawOrg.Y);
-
-					
-
-					SelectPen = newPen_red;
-					tmp_rect1 = m_small_circle;
-					tmp_rect1.X = m_CheckTrafficPt.X + m_small_circle.X/2;
-					tmp_rect1.Y = m_CheckTrafficPt.Y + m_small_circle.Y/2;
-					tmp = tmp_rect1;
-					tmp.X = tmp_rect1.X + m_DrawOrg.X;
-					tmp.Y = tmp_rect1.Y + m_DrawOrg.Y;
-					e.DrawEllipse(SelectPen, tmp);
-
 
 				}
 				else

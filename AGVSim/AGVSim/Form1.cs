@@ -65,7 +65,7 @@ namespace AGVSim
 
         // Operations
         public List<CPath> Path_List = new List<CPath>();
-        public List<CStop> Stop_List = new List<CStop>();
+        public List<CStop> Stop_List = new List<CStop>();        
         public List<CConnection> Connection_List = new List<CConnection>();
         public List<CVehicle> Vehicle_List = new List<CVehicle>();
         CPath tmp_Path = new CPath();
@@ -81,6 +81,8 @@ namespace AGVSim
             form1 = this;
             this.pictureBoxMap.MouseWheel += new
                 MouseEventHandler(PictureBox_MouseWheel);
+
+           
         }
 
         /// <summary>
@@ -97,25 +99,30 @@ namespace AGVSim
         string url = System.Environment.CurrentDirectory;
         int a = 0;
 
+        public float sizebox = 1;
+        int PictureBoxMapHeight, PictureBoxMapWidth;
+        int c = 0;
+        int i = 0 ,j = 0;
+        int cot = 0;
+        CPoint record = new CPoint();
+        Form5 f5 = new Form5();
+        Form6 f6 = new Form6();
 
         private void pictureBoxMap_MouseEnter(object sender, EventArgs e)
         {            
-           this.pictureBoxMap.Focus();
+           //this.pictureBoxMap.Focus();
         }
 
        private void pictureBoxMap_MouseLeave(object sender, EventArgs e)
        {
-           this.pictureBoxMap.Parent.Focus();
+           //this.pictureBoxMap.Parent.Focus();
        }
 
-        public float sizebox = 1;
-        int PictureBoxMapHeight, PictureBoxMapWidth;
-        int c = 0;
+        
 
         public void PictureBox_MouseWheel(object sender, MouseEventArgs e)
         {
             CPath cp = new CPath();
-            cp.ss = 
             cp.ss  = String.Format("{0:D2}-{1:D}", cp.m_ID, cp.OnPathAGVs.Count + "  " + cp.sizeAct.ToString() + "m");
 
             CPoint point = new CPoint(e.X, e.Y);
@@ -154,14 +161,51 @@ namespace AGVSim
                 //Console.WriteLine(pictureBoxMap.Width);
             }
 
-            Array stoplist;
-            stoplist = Stop_List.ToArray();
-            Console.WriteLine("RRR" + stoplist);
+
+
+            CStop pStop = new CStop();
+            pStop.CSm_cion_sel = m_icon_sel;
+            pStop.m_DrawOrg = m_DrawOrg;
+            CPoint tmp = new CPoint();
+            
+            for (int i = 0; i < Stop_List.Count; i++)
+            {
+                if (j < i)
+                {
+                    cot = 0;
+                    j = i;
+                }
+                if (cot == 0)
+                {
+                    record.X = Stop_List[i].tmp.X;
+                    record.Y = Stop_List[i].tmp.Y;
+                    cot = 1;
+                }
+                tmp.X = (int)(float)(record.X * sizebox);
+                tmp.Y = (int)(float)(record.Y * sizebox);
+                Stop_List.RemoveAt(i);
+                pStop.AddObj(GetID(10), i, tmp); // 10: Type Stop -> Station/ Connection; 0: Station Stop                                                 
+                Stop_List.Add(pStop);
+                //Stop_List[0].tmp.X = tmp.X;
+                //Stop_List[0].tmp.Y = tmp.Y;
+                Console.WriteLine(record);
+                Console.WriteLine(Stop_List.Count);
+            }
+            j = 0;
+
+
+
+            /*
+            pStop.AddObj(GetID(10), 0, tmp); // 10: Type Stop -> Station/ Connection; 0: Station Stop
+            Stop_List.Add(pStop);
+            */
+
 
         }
 
 
-        
+
+
         private void pictureBoxMap_MouseClick(object sender, MouseEventArgs e)
        {
             //切割資料
@@ -192,8 +236,8 @@ namespace AGVSim
 
 
         private void pictureBoxMap_MouseDown(object sender, MouseEventArgs e)
-        {
-            /*
+        {/*
+            
             if (MeasuringAble % 2 == 0)
             {
                 if (e.Button == MouseButtons.Left)
@@ -289,6 +333,7 @@ namespace AGVSim
                     Console.WriteLine("[pictureBoxMap_MouseDown] 1");
                     AddObj(point);
                 }
+
             }
             else if (e.Button == MouseButtons.Right)
             {
@@ -311,10 +356,63 @@ namespace AGVSim
                 }
                 pictureBoxMap.Invalidate(WorkArea);
 
+                
+
+                if (m_icon_sel == 0)  //右鍵點位開啟視窗
+                {
+                    // Check if the cursor inside a Stop 
+                    if (CursorInsideStation(point, ref idx, ref type) && type == 10)
+                    {
+                        CPath pPath = new CPath();
+                        int tmp_id = idx;
+                        tmp_Path.StationIDs[0] = tmp_id;
+
+                        //f5.Visible = false;
+                        f5.StationID.Text = "Station" + (tmp_id + 1).ToString();
+                        f5.Visible = true;
+                        f6.Visible = false;
+                        f5.Focus();
+                    }
+                    else if (CursorInsideStation(point, ref idx, ref type) && type == 20)  
+                    {
+                        CPath pPath = new CPath();
+                        int tmp_id = idx;
+                        tmp_Path.StationIDs[0] = tmp_id;
+                        
+                        //f6.Visible = false;
+                        f6.LineID.Text = "Line" + (tmp_id + 1).ToString();                        
+                        f6.Visible = true;
+                        f5.Visible = false;
+                        f6.Focus();            
+                    }
+                    else
+                    {
+                        f5.Visible = false;
+                        f6.Visible = false;
+                    }
+                    /*
+                    CPath pPath = new CPath();
+                    pPath.cpsizebox = sizebox;
+                    pPath.m_DrawOrg = m_DrawOrg;
+                    // Add a Path with the info of
+                    // Path ID, Two Station IDs and a Conner Point
+                    CStop tmp1 = Stop_List[tmp_Path.StationIDs[0]];
+                    CStop tmp2 = Stop_List[tmp_Path.StationIDs[1]];
+                    CPoint tmp3 = new CPoint();
+                    int tmp4 = 0;
+                    pPath.AddObj(GetID(20), 0, ref tmp1, ref tmp2, tmp3, tmp4, 0); // 20: Type Path
+                    Stop_List[tmp_Path.StationIDs[0]] = tmp1;
+                    Stop_List[tmp_Path.StationIDs[1]] = tmp2;
+                    Path_List.Add(pPath);
+                    // Reset
+                    tmp_Path.Reset();
+                    ArcDrawing = 0;
+                    */
+                }
             }
             
         }
-
+        public string StationId;
 
         private void pictureBoxMap_MouseMove(object sender, MouseEventArgs e)
         {
@@ -329,7 +427,7 @@ namespace AGVSim
                 }
             }
         }
-
+        
 
         private void pictureBoxMap_MouseUp(object sender, MouseEventArgs e)
         {/*
